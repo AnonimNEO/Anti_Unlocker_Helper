@@ -1,17 +1,35 @@
-# Anti_Unlocker_Helper v0.5.3 Beta
+# Anti_Unlocker_Helper v0.6.3 Beta
 
 > [!WARNING]
-> Данный репоризиторий создан **ИСКЛЮЧИТЕЛЬНО** в **демонстрационых** целях, а также для показа масштаба **проблемы** в защите программах *NHelper*, *RecoveryKit* и других.
+> Данный репоризиторий создан **ИСКЛЮЧИТЕЛЬНО** в **демонстрационых** целях, а также для показа масштаба **проблемы** в защите программах *NHelper*, *RecoveryKit*, *ReUnlocker* и других.
 
 > [!WARNING]
-> **Мы не предоставляем никакой ответственности или гарантий, а также мы не распространяем никакие бинарники!**
+> **Мы не предоставляем никакой ответственности или гарантий, а также не распространяем никакие бинарники!**
 
+# Оглавление
+
+- [Уязвимости NHelper](#nhelper)
+	- [1) Название процесса в %Temp%/.Net](#process_name_in_net)
+	- [2) Параметр EnableBlockSearch в реестре](#enableblocksearch)
+	- [3) user.config в %localappdata%\NHelperV4](#user.config)
+- [Уязвимости RecoveryKit](#recoverykit)
+- [Уязвимости ReUnlocker](#reunlocker)
+	- [1) Название процесса в *%Temp%/.net/*](#net_dir)
+	- [2) Каталог *Test* в *C:\Windows\Help*](#test_dir)
+- [Универсальные метода](#universal)
+	- [Заголовки окон](#title_window)
+- [Видео на эту тему](#video)
+- [Особые Благодарности](#thanks)
+- [Рекомендации](#recomendation)
+
+<a name="nhelper"></a>
 # Уязвимости NHelper
 
 > [!NOTE]
 > Все ниже перечисленные уязвимости работают на любой версии NHelper. *могут отличтася только название каталогов nhelper*
 
-## 1) Название процесса в %Temp%/.net/
+<a name="process_name_in_net"></a>
+## 1) Название процесса в *%Temp%/.net/*
  
  При запуске NHelper распаковывает свои файлы в В каталоге %Temp%/.net/(название_исполняемого_файла)/(случайные_символы)/ - нас интересует название всех каталогов в .net/
  > [!NOTE]
@@ -19,14 +37,16 @@
 
  Затем получаем пути к исполняемым файлам, убиваем процессы и удаляем исполняемые файлы.
 
-## 2) Параметр EnableBlockSearch в реестре
+<a name="enableblocksearch"></a>
+## 2) Параметр *EnableBlockSearch* в реестре
 
 При каждом запуске NHelper проверяет значение параметра (DWORD) в реестре по пути:
 HKEY_LOCAL_MACHINE/SOFTWARE/Mozilla/EnableBlockSearch
 Если он равен 1, то программа на этапе инициализации сообщит "ошибку" с текстом "Ты ваще, это мой вирус".
 Это встроенная защита NHelper, чтобы он не запускался когда работает вирус от *getgans*.
 
-## 3) user.config в %localappdata%\NHelperV4
+<a name="user.config"></a>
+## 3) *user.config* в *%localappdata%\NHelperV4*
 
 При запуске NHelper по пути %localappdata%\NHelper4 создаёт XML файл user.config с разметкой для меню настроек. Если намерено повредить данный файл то при открытии меню настроек вылезет ошибка Microsoft .NET *это если повреждение было выполнено во время работы NHelper*. При следующем запуске NHelper и во все не запустится.
 
@@ -39,26 +59,42 @@ HKEY_LOCAL_MACHINE/SOFTWARE/Mozilla/EnableBlockSearch
 >[!NOTE]
 > Код распространятся по лицензии GPL v3!
 
+<a name="recoverykit"></a>
 # Уязвимости RecoveryKit
 
 *На данный момент проверка на уязвимости командой NEO Organization не проводилась, однако RecoveryKit подвержен уязвимости по заголовку окна.*
 
-# Универсальные методы
+<a name="reunlocker"></a>
+# Уязвимости ReUnlocker
 
+<a name="net_dir"></a>
+## 1) Название процесса в *%Temp%/.net/*
+Тоже самое как и в [NHelper](#process_name_in_.net)
+
+<a name="test_dir"></a>
+## 2) Каталог *Test* в *C:\Windows\Help*
+При каждом запуске ReUnlocker, программа проверяет есть ли в **C:\Windows\Help**, каталог ***Test*** если да то программа не запустится, это защита от вирусов от *redteam*
+
+<a name="universal"></a>
+# Универсальные методы
+<a name="title_window"></a>
 ## Заголовки окон
 
 **Большинство** программ в открытом доступе **не** имеют случайных заголовков окна, что черевато тем, что вирус может просто выявить программу закрыть её, а затем **удалить**.
 
+<a name="video"></a>
 # Видео на эту тему:
  - [NHelper с дырявой защитой?](https://www.youtube.com/watch?v=OgnUandF6cQ)
  - [NHelper НЕ безопасен! Меня игнорирует разраб](https://www.youtube.com/watch?v=-1TFR7IjW7w)
  - [Как обойти защиту NHelper? (легко)](https://www.youtube.com/watch?v=9plRdFobB0Y)
  - [pirate helper с дырявой защитой? (да)](https://www.youtube.com/watch?v=pu1e3XzjSCo)
 
+<a name="thanks"></a>
 # Особые Благодаронсти
 
-**KOSMOS0ft** - за нахождение 2 и 3 уязвимости в NHelper.
+**KOSMOS0ft** - за нахождение 2 и 3 уязвимости в NHelper, а также за нахождение 1 и 2 уязвимости 
 
+<a name="recomendation"></a>
 # Рекомендация
 **Антивирус Монтировка *устойчив*** к подобным воздействиям, а также является **полностью свободным и открытым проектом.**
-Подробнее в этом [репозитории](https://github.com/AnonimNEO/Crowbar-Antivirus)
+Подробнее в этом [репозитории](https://github.com/AnonimNEO/Crowbar-Antivirus).
