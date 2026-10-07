@@ -8,6 +8,8 @@
 # Copyleft 🄯 NEO Organization, Departament K 2026
 # Coded by AnonimNEO (Github)
 
+# Получение прав администратора
+from elevate import elevate
 # Работа с процессами
 import win32process
 import win32gui
@@ -22,7 +24,7 @@ import time
 # Работа с реестром
 import winreg
 
-auh_version = "0.5.4 Beta"
+auh_version = "0.6.2 Beta"
 
 DEBUG_MODE = False
 
@@ -92,16 +94,19 @@ def break_xml():
 
 
 
-def block_defend():
-    """Создание параметра EnableBlockSearch (DWORD) по пути HKEY_LOCAL_MACHINE/SOFTWARE/Mozaila/"""
-    k = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, r"SOFTWARE\Mozilla", 0, winreg.KEY_WRITE)
-    winreg.SetValueEx(k, "EnableBlockSearch", 0, winreg.REG_DWORD, 1)
-    winreg.CloseKey(k)
-    logger.success("AUH - Ложная защита nhelper включена")
+def block_defend(program):
+    if program == "nh":
+        #Создание параметра EnableBlockSearch (DWORD) по пути HKEY_LOCAL_MACHINE/SOFTWARE/Mozaila/
+        k = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, r"SOFTWARE\Mozilla", 0, winreg.KEY_WRITE)
+        winreg.SetValueEx(k, "EnableBlockSearch", 0, winreg.REG_DWORD, 1)
+        winreg.CloseKey(k)
+        logger.success("AUH - Ложная защита nhelper включена")
+    elif program == "reu":
+        os.makedirs(r"C:\Windows\Help", exist_ok=True)
 
 
 
-def kill_nh(DEBUG_MODE=False):
+def kill_net(DEBUG_MODE=False):
     """Нахождение имени процесса, затем его убийство и удаление исполняемого файла"""
     folder_list = get_folder_names(NET_PATH)
 
@@ -198,10 +203,7 @@ if __name__ == "__main__":
         logger.info(">>> Настройка логирования...")
         try:
             logger.add(f"AN_log.txt", format="{time} {level} {message}", rotation="10 MB", compression="zip")
-            from elevate import elevate
             elevate()
-            global user_name
-            user_name = os.getlogin()
             logger.success("AUH - Успешная подготовка к работе, запуск...")
         except:
             logger.exception("AUH - Ошибка инициализации")
@@ -215,6 +217,7 @@ if __name__ == "__main__":
             print("║" + "  1) Универсальные методы".ljust(45) + "║")
             print("║" + "  2) NHelper".ljust(45) + "║")
             print("║" + "  3) Recovery Kit".ljust(45) + "║")
+            print("║" + "  4) ReUnlocker".ljust(45) + "║")
             print("║" + " " * 45 + "║")
             print("=" * 47)
             program = int(input(">>> Ваш выбор: ").strip())
@@ -254,17 +257,17 @@ if __name__ == "__main__":
                         if input("\n[?] Включить цикл? (1 - да, другое - нет): ").strip() == "1":
                             while True:
                                 try:
-                                    kill_nh(DEBUG_MODE)
+                                    kill_net(DEBUG_MODE)
                                     logger.info("AUH - Цикл nh завершён, повтор...")
                                     time.sleep(0.5)
                                 except KeyboardInterrupt:
                                     logger.warning("AUH - Цикл остановлен пользователем")
                                     break
                         else:
-                            kill_nh(DEBUG_MODE)
+                            kill_net(DEBUG_MODE)
                     elif choice == 2:
                         logger.info("AUH - Применение защиты NHelper...")
-                        block_defend()
+                        block_defend("nh")
                     elif choice == 3:
                         logger.info("AUH - Изменение кодировки XML...")
                         break_xml()
@@ -272,6 +275,39 @@ if __name__ == "__main__":
                         print("\n[!] Неправильный ввод. Попробуйте ещё раз.")
             elif program == 3:
                 print('>>> Для RecoveryKit на данный момент нет уникальных уязвимостей, на него работает раздел "Универсальные"')
+            elif program == 4:
+                while True:
+                    print("\n" + "=" * 47)
+                    print("║" + " " * 45 + "║")
+                    print("║" + "  Какой уязвимостью хотите воспользоваться?".center(45) + "║")
+                    print("║" + " " * 45 + "║")
+                    print("║" + "  0) Выход в меню".ljust(45) + "║")
+                    print("║" + "  1) Названием процесса в %Temp%/.net/".ljust(45) + "║")
+                    print("║" + "  2) Защита ReUnlocker от redteam".ljust(45) + "║")
+                    print("║" + " " * 45 + "║")
+                    print("=" * 47)
+
+                    choice = int(input("\n>>> Ваш выбор: ").strip())
+
+                    if choice == 0:
+                        break
+                    elif choice == 1:
+                        if input("\n[?] Включить цикл? (1 - да, другое - нет): ").strip() == "1":
+                            while True:
+                                try:
+                                    kill_net(DEBUG_MODE)
+                                    logger.info("AUH - Цикл reu завершён, повтор...")
+                                    time.sleep(0.5)
+                                except KeyboardInterrupt:
+                                    logger.warning("AUH - Цикл остановлен пользователем")
+                                    break
+                        else:
+                            kill_net(DEBUG_MODE)
+                    elif choice == 2:
+                        logger.info("AUH - Применение защиты ReUnlocker...")
+                        block_defend("reu")
+                    else:
+                        print("\n[!] Неправильный ввод. Попробуйте ещё раз.")
             else:
                 print("\n[!] Неправильный ввод. Попробуйте ещё раз.")
     except:
