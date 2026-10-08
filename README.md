@@ -92,7 +92,7 @@ HKEY_LOCAL_MACHINE/SOFTWARE/Mozilla/EnableBlockSearch
 <a name="thanks"></a>
 # Особые Благодаронсти
 
-**KOSMOS0ft** - за нахождение 2 и 3 уязвимости в NHelper, а также за нахождение 1 и 2 уязвимости 
+**KOSMOS0ft** - за нахождение 2 и 3 уязвимости в NHelper, а также за нахождение 2 уязвимости в ReUnlocker 
 
 <a name="recomendation"></a>
 # Рекомендация
