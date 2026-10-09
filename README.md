@@ -1,4 +1,4 @@
-# Anti_Unlocker_Helper v0.6.3 Beta
+# Anti_Unlocker_Helper v0.7.0 Beta
 
 > [!WARNING]
 > Данный репоризиторий создан **ИСКЛЮЧИТЕЛЬНО** в **демонстрационых** целях, а также для показа масштаба **проблемы** в защите программах *NHelper*, *RecoveryKit*, *ReUnlocker* и других.
@@ -9,15 +9,14 @@
 # Оглавление
 
 - [Уязвимости NHelper](#nhelper)
-	- [1) Название процесса в %Temp%/.Net](#process_name_in_net)
-	- [2) Параметр EnableBlockSearch в реестре](#enableblocksearch)
-	- [3) user.config в %localappdata%\NHelperV4](#user.config)
+	- [1) Параметр EnableBlockSearch в реестре](#enableblocksearch)
+	- [2) user.config в %localappdata%\NHelperV4](#user.config)
 - [Уязвимости RecoveryKit](#recoverykit)
 - [Уязвимости ReUnlocker](#reunlocker)
-	- [1) Название процесса в *%Temp%/.net/*](#net_dir)
-	- [2) Каталог *Test* в *C:\Windows\Help*](#test_dir)
+	- [1) Каталог *Test* в *C:\Windows\Help*](#test_dir)
 - [Универсальные метода](#universal)
-	- [Заголовки окон](#title_window)
+    - [1) Название процесса в %Temp%/.Net](#process_name_in_net)
+	- [2) Заголовки окон](#title_window)
 - [Видео на эту тему](#video)
 - [Особые Благодарности](#thanks)
 - [Рекомендации](#recomendation)
@@ -28,17 +27,8 @@
 > [!NOTE]
 > Все ниже перечисленные уязвимости работают на любой версии NHelper. *могут отличтася только название каталогов nhelper*
 
-<a name="process_name_in_net"></a>
-## 1) Название процесса в *%Temp%/.net/*
- 
- При запуске NHelper распаковывает свои файлы в В каталоге %Temp%/.net/(название_исполняемого_файла)/(случайные_символы)/ - нас интересует название всех каталогов в .net/
- > [!NOTE]
- > Так как название исполняемого файла всегда совпадает с названием процесса, получив все названия каталогов в .net/ мы можем получить список всех процессов с таким названием
-
- Затем получаем пути к исполняемым файлам, убиваем процессы и удаляем исполняемые файлы.
-
 <a name="enableblocksearch"></a>
-## 2) Параметр *EnableBlockSearch* в реестре
+## 1) Параметр *EnableBlockSearch* в реестре
 
 При каждом запуске NHelper проверяет значение параметра (DWORD) в реестре по пути:
 HKEY_LOCAL_MACHINE/SOFTWARE/Mozilla/EnableBlockSearch
@@ -46,7 +36,7 @@ HKEY_LOCAL_MACHINE/SOFTWARE/Mozilla/EnableBlockSearch
 Это встроенная защита NHelper, чтобы он не запускался когда работает вирус от *getgans*.
 
 <a name="user.config"></a>
-## 3) *user.config* в *%localappdata%\NHelperV4*
+## 2) *user.config* в *%localappdata%\NHelperV4*
 
 При запуске NHelper по пути %localappdata%\NHelper4 создаёт XML файл user.config с разметкой для меню настроек. Если намерено повредить данный файл то при открытии меню настроек вылезет ошибка Microsoft .NET *это если повреждение было выполнено во время работы NHelper*. При следующем запуске NHelper и во все не запустится.
 
@@ -67,23 +57,31 @@ HKEY_LOCAL_MACHINE/SOFTWARE/Mozilla/EnableBlockSearch
 <a name="reunlocker"></a>
 # Уязвимости ReUnlocker
 
-<a name="net_dir"></a>
-## 1) Название процесса в *%Temp%/.net/*
-Тоже самое как и в [NHelper](#process_name_in_.net)
-
 <a name="test_dir"></a>
-## 2) Каталог *Test* в *C:\Windows\Help*
+## 1) Каталог *Test* в *C:\Windows\Help*
 При каждом запуске ReUnlocker, программа проверяет есть ли в **C:\Windows\Help**, каталог ***Test*** если да то программа не запустится, это защита от вирусов от *redteam*
 
 <a name="universal"></a>
 # Универсальные методы
+
+<a name="process_name_in_net"></a>
+## 1) Название процесса в *%Temp%/.net/*
+
+При запуске программы на NetFraemwork, она распаковывает свои файлы в каталог %Temp%/.net/(название_исполняемого_файла) - нас интересует название всех каталогов в .net/
+> [!NOTE]
+> Так как название исполняемого файла всегда совпадает с названием процесса, получив все названия каталогов в .net/ мы можем получить список всех процессов с таким названием
+
+Затем получаем пути к исполняемым файлам, убиваем процессы и удаляем исполняемые файлы.
+
 <a name="title_window"></a>
-## Заголовки окон
+## 2) Заголовки окон
 
 **Большинство** программ в открытом доступе **не** имеют случайных заголовков окна, что черевато тем, что вирус может просто выявить программу закрыть её, а затем **удалить**.
 
 <a name="video"></a>
 # Видео на эту тему:
+ - [BunnyBlack с дырявой защитой?](https://youtu.be/MdwJemu-8jw)
+ - [ReUnlocker с дырявой защитой?](#https://youtu.be/qLXKGmeDwEs)
  - [NHelper с дырявой защитой?](https://www.youtube.com/watch?v=OgnUandF6cQ)
  - [NHelper НЕ безопасен! Меня игнорирует разраб](https://www.youtube.com/watch?v=-1TFR7IjW7w)
  - [Как обойти защиту NHelper? (легко)](https://www.youtube.com/watch?v=9plRdFobB0Y)
@@ -92,7 +90,7 @@ HKEY_LOCAL_MACHINE/SOFTWARE/Mozilla/EnableBlockSearch
 <a name="thanks"></a>
 # Особые Благодаронсти
 
-**KOSMOS0ft** - за нахождение 2 и 3 уязвимости в NHelper, а также за нахождение 2 уязвимости в ReUnlocker 
+**KOSMOS0ft** - за нахождение 2 и 3 уязвимости в NHelper, а также за нахождение 2 уязвимости в ReUnlocker.
 
 <a name="recomendation"></a>
 # Рекомендация

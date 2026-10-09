@@ -24,7 +24,7 @@ import time
 # Работа с реестром
 import winreg
 
-auh_version = "0.6.2 Beta"
+auh_version = "0.7.0 Beta"
 
 DEBUG_MODE = False
 
@@ -106,26 +106,39 @@ def block_defend(program):
 
 
 
-def kill_net(DEBUG_MODE=False):
+def kill_net_cycle(DEBUG_MODE=False):
     """Нахождение имени процесса, затем его убийство и удаление исполняемого файла"""
-    folder_list = get_folder_names(NET_PATH)
+    def kill_net(DEBUG_MODE):
+        folder_list = get_folder_names(NET_PATH)
 
-    if isinstance(folder_list, list):
-        kill_some_process_by_name(folder_list)
-        for i in folder_list:
+        if isinstance(folder_list, list):
+            kill_some_process_by_name(folder_list)
+            for i in folder_list:
+                try:
+                    os.remove(f"{NET_PATH}\\{folder_list[i]}")
+                    logger.success(f"AUH - Каталог {NET_PATH}\\{folder_list[i]} удалён.")
+                except:
+                    if DEBUG_MODE:
+                        logger.error(f"AUH - ошибка при удалении подкаталога в {NET_PATH}")
+                    pass
+
+        for dir in NH_DIRS:
             try:
-                os.remove(f"{NET_PATH}\\{folder_list[i]}")
-                logger.success(f"AUH - Каталог {NET_PATH}\\{folder_list[i]} удалён.")
+                os.remove(dir)
             except:
-                if DEBUG_MODE:
-                    logger.error(f"AUH - ошибка при удалении подкаталога в {NET_PATH}")
                 pass
 
-    for dir in NH_DIRS:
-        try:
-            os.remove(dir)
-        except:
-            pass
+    if input("\n[?] Включить цикл? (1 - да, другое - нет): ").strip() == "1":
+        while True:
+            try:
+                kill_net(DEBUG_MODE)
+                logger.info("AUH - Цикл np завершён, повтор...")
+                time.sleep(0.5)
+            except KeyboardInterrupt:
+                logger.warning("AUH - Цикл остановлен пользователем")
+                break
+    else:
+        kill_net(DEBUG_MODE)
 
 
 
@@ -225,17 +238,33 @@ if __name__ == "__main__":
                 logger.info("AUH - Выход...")
                 exit()
             elif program == 1:
-                if input("\n[?] Включить цикл? (1 - да, другое - нет): ").strip() == "1":
-                    while True:
-                        try:
+                while True:
+                    print("\n" + "=" * 47)
+                    print("║" + " " * 45 + "║")
+                    print("║" + "  Для какой программы работаем?".center(45) + "║")
+                    print("║" + " " * 45 + "║")
+                    print("║" + "  0) Выход из утилиты".ljust(45) + "║")
+                    print("║" + "  1) Имя процесса в %Temp%/.net".ljust(45) + "║")
+                    print("║" + "  2) Заголовки окон".ljust(45) + "║")
+                    print("║" + " " * 45 + "║")
+                    print("=" * 47)
+                    universal = int(input(">>> Ваш выбор: ").strip())
+                    if universal == 0:
+                        break
+                    elif universal == 1:
+                        kill_net_cycle(DEBUG_MODE)
+                    elif universal == 2:
+                        if input("\n[?] Включить цикл? (1 - да, другое - нет): ").strip() == "1":
+                            while True:
+                                try:
+                                    kill_bad_window(DEBUG_MODE)
+                                    logger.info("AUH - Цикл title завершён, повтор...")
+                                    time.sleep(0.5)
+                                except KeyboardInterrupt:
+                                    logger.warning("AUH - Цикл остановлен пользователем")
+                                    break
+                        else:
                             kill_bad_window(DEBUG_MODE)
-                            logger.info("AUH - Цикл title завершён, повтор...")
-                            time.sleep(0.5)
-                        except KeyboardInterrupt:
-                            logger.warning("AUH - Цикл остановлен пользователем")
-                            break
-                else:
-                    kill_bad_window(DEBUG_MODE)
             elif program == 2:
                 while True:
                     print("\n" + "=" * 47)
@@ -243,9 +272,8 @@ if __name__ == "__main__":
                     print("║" + "  Какой уязвимостью хотите воспользоваться?".center(45) + "║")
                     print("║" + " " * 45 + "║")
                     print("║" + "  0) Выход в меню".ljust(45) + "║")
-                    print("║" + "  1) Названием процесса в %Temp%/.net/".ljust(45) + "║")
-                    print("║" + "  2) Защита NHelper от getgans".ljust(45) + "║")
-                    print("║" + "  3) Смена кодировки XML в user.config".ljust(45) + "║")
+                    print("║" + "  1) Защита NHelper от getgans".ljust(45) + "║")
+                    print("║" + "  2) Смена кодировки XML в user.config".ljust(45) + "║")
                     print("║" + " " * 45 + "║")
                     print("=" * 47)
 
@@ -254,21 +282,9 @@ if __name__ == "__main__":
                     if choice == 0:
                         break
                     elif choice == 1:
-                        if input("\n[?] Включить цикл? (1 - да, другое - нет): ").strip() == "1":
-                            while True:
-                                try:
-                                    kill_net(DEBUG_MODE)
-                                    logger.info("AUH - Цикл nh завершён, повтор...")
-                                    time.sleep(0.5)
-                                except KeyboardInterrupt:
-                                    logger.warning("AUH - Цикл остановлен пользователем")
-                                    break
-                        else:
-                            kill_net(DEBUG_MODE)
-                    elif choice == 2:
                         logger.info("AUH - Применение защиты NHelper...")
                         block_defend("nh")
-                    elif choice == 3:
+                    elif choice == 2:
                         logger.info("AUH - Изменение кодировки XML...")
                         break_xml()
                     else:
@@ -282,8 +298,7 @@ if __name__ == "__main__":
                     print("║" + "  Какой уязвимостью хотите воспользоваться?".center(45) + "║")
                     print("║" + " " * 45 + "║")
                     print("║" + "  0) Выход в меню".ljust(45) + "║")
-                    print("║" + "  1) Названием процесса в %Temp%/.net/".ljust(45) + "║")
-                    print("║" + "  2) Защита ReUnlocker от redteam".ljust(45) + "║")
+                    print("║" + "  1) Защита ReUnlocker от redteam".ljust(45) + "║")
                     print("║" + " " * 45 + "║")
                     print("=" * 47)
 
@@ -292,18 +307,6 @@ if __name__ == "__main__":
                     if choice == 0:
                         break
                     elif choice == 1:
-                        if input("\n[?] Включить цикл? (1 - да, другое - нет): ").strip() == "1":
-                            while True:
-                                try:
-                                    kill_net(DEBUG_MODE)
-                                    logger.info("AUH - Цикл reu завершён, повтор...")
-                                    time.sleep(0.5)
-                                except KeyboardInterrupt:
-                                    logger.warning("AUH - Цикл остановлен пользователем")
-                                    break
-                        else:
-                            kill_net(DEBUG_MODE)
-                    elif choice == 2:
                         logger.info("AUH - Применение защиты ReUnlocker...")
                         block_defend("reu")
                     else:
