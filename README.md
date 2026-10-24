@@ -81,7 +81,7 @@ HKEY_LOCAL_MACHINE/SOFTWARE/Mozilla/EnableBlockSearch
 <a name="video"></a>
 # Видео на эту тему:
  - [BunnyBlack с дырявой защитой?](https://youtu.be/MdwJemu-8jw)
- - [ReUnlocker с дырявой защитой?](#https://youtu.be/qLXKGmeDwEs)
+ - [ReUnlocker с дырявой защитой?](https://youtu.be/qLXKGmeDwEs)
  - [NHelper с дырявой защитой?](https://www.youtube.com/watch?v=OgnUandF6cQ)
  - [NHelper НЕ безопасен! Меня игнорирует разраб](https://www.youtube.com/watch?v=-1TFR7IjW7w)
  - [Как обойти защиту NHelper? (легко)](https://www.youtube.com/watch?v=9plRdFobB0Y)
